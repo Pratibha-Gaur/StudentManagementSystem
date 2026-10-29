@@ -7,9 +7,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Frontend: View, search, update and delete student records in a table.
+ */
 public class ViewStudentsForm extends JFrame {
 
     // Components
@@ -39,58 +43,53 @@ public class ViewStudentsForm extends JFrame {
 
         // Frame settings
         setTitle("View All Students");
-        setSize(900, 600);
+        setSize(950, 640);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
 
         // Main Panel
         mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(236, 240, 241));
+        mainPanel.setBackground(UIStyle.GRAY_BG);
         mainPanel.setLayout(null);
 
         // Header Panel
         headerPanel = new JPanel();
-        headerPanel.setBackground(new Color(52, 152, 219));
+        headerPanel.setBackground(UIStyle.PRIMARY_BLUE);
         headerPanel.setLayout(null);
-        headerPanel.setBounds(0, 0, 900, 70);
+        headerPanel.setBounds(0, 0, 950, 75);
         mainPanel.add(headerPanel);
 
         // Title Label
         titleLabel = new JLabel("ALL STUDENTS");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        titleLabel.setBounds(350, 20, 250, 35);
+        titleLabel.setFont(UIStyle.FONT_TITLE);
+        titleLabel.setBounds(370, 22, 250, 35);
         headerPanel.add(titleLabel);
 
         // Search Panel
         searchPanel = new JPanel();
-        searchPanel.setBackground(new Color(189, 195, 199));
+        searchPanel.setBackground(UIStyle.PANEL_GRAY);
         searchPanel.setLayout(null);
-        searchPanel.setBounds(0, 70, 900, 60);
+        searchPanel.setBounds(0, 75, 950, 60);
         mainPanel.add(searchPanel);
 
         // Search Label
         searchLabel = new JLabel("Search:");
-        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchLabel.setFont(UIStyle.FONT_LABEL);
+        searchLabel.setForeground(UIStyle.PRIMARY_DARK);
         searchLabel.setBounds(20, 18, 70, 25);
         searchPanel.add(searchLabel);
 
         // Search Field
         searchField = new JTextField();
-        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
+        UIStyle.styleField(searchField);
         searchField.setBounds(100, 15, 300, 30);
         searchPanel.add(searchField);
 
         // Search Button
-        searchButton = new JButton("SEARCH");
-        searchButton.setBackground(new Color(52, 152, 219));
-        searchButton.setForeground(Color.WHITE);
-        searchButton.setFont(new Font("Arial", Font.BOLD, 13));
+        searchButton = UIStyle.createButton("SEARCH", UIStyle.PRIMARY_BLUE);
         searchButton.setBounds(420, 15, 100, 30);
-        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        searchButton.setFocusPainted(false);
-        searchButton.setBorderPainted(false);
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 searchStudent();
@@ -99,14 +98,8 @@ public class ViewStudentsForm extends JFrame {
         searchPanel.add(searchButton);
 
         // Show All Button
-        showAllButton = new JButton("SHOW ALL");
-        showAllButton.setBackground(new Color(46, 204, 113));
-        showAllButton.setForeground(Color.WHITE);
-        showAllButton.setFont(new Font("Arial", Font.BOLD, 13));
+        showAllButton = UIStyle.createButton("SHOW ALL", UIStyle.SUCCESS_GREEN);
         showAllButton.setBounds(540, 15, 110, 30);
-        showAllButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        showAllButton.setFocusPainted(false);
-        showAllButton.setBorderPainted(false);
         showAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 loadAllStudents();
@@ -115,7 +108,7 @@ public class ViewStudentsForm extends JFrame {
         searchPanel.add(showAllButton);
 
         // Table
-        String[] columns = {"ID", "First Name", "Last Name", 
+        String[] columns = {"ID", "First Name", "Last Name",
                            "Email", "Phone", "Course", "Marks", "Address"};
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int column) {
@@ -124,35 +117,31 @@ public class ViewStudentsForm extends JFrame {
         };
 
         studentTable = new JTable(tableModel);
-        studentTable.setFont(new Font("Arial", Font.PLAIN, 13));
-        studentTable.setRowHeight(25);
-        studentTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
-        studentTable.getTableHeader().setBackground(new Color(44, 62, 80));
+        studentTable.setFont(UIStyle.FONT_FIELD);
+        studentTable.setRowHeight(26);
+        studentTable.getTableHeader().setFont(UIStyle.FONT_LABEL);
+        studentTable.getTableHeader().setBackground(UIStyle.PRIMARY_DARK);
         studentTable.getTableHeader().setForeground(Color.WHITE);
-        studentTable.setSelectionBackground(new Color(52, 152, 219));
+        studentTable.setSelectionBackground(UIStyle.PRIMARY_BLUE);
         studentTable.setSelectionForeground(Color.WHITE);
-        studentTable.setGridColor(new Color(189, 195, 199));
+        studentTable.setGridColor(UIStyle.PANEL_GRAY);
+        studentTable.setIntercellSpacing(new Dimension(0, 0));
+        UIStyle.applyZebraStriping(studentTable);
 
         scrollPane = new JScrollPane(studentTable);
-        scrollPane.setBounds(10, 140, 875, 350);
+        scrollPane.setBounds(10, 145, 925, 370);
         mainPanel.add(scrollPane);
 
         // Button Panel
         buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(236, 240, 241));
+        buttonPanel.setBackground(UIStyle.GRAY_BG);
         buttonPanel.setLayout(null);
-        buttonPanel.setBounds(0, 500, 900, 60);
+        buttonPanel.setBounds(0, 530, 950, 60);
         mainPanel.add(buttonPanel);
 
         // Update Button
-        updateButton = new JButton("UPDATE STUDENT");
-        updateButton.setBackground(new Color(230, 126, 34));
-        updateButton.setForeground(Color.WHITE);
-        updateButton.setFont(new Font("Arial", Font.BOLD, 13));
-        updateButton.setBounds(200, 10, 160, 40);
-        updateButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        updateButton.setFocusPainted(false);
-        updateButton.setBorderPainted(false);
+        updateButton = UIStyle.createButton("UPDATE STUDENT", UIStyle.WARNING_ORANGE);
+        updateButton.setBounds(200, 10, 170, 40);
         updateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateStudent();
@@ -161,14 +150,8 @@ public class ViewStudentsForm extends JFrame {
         buttonPanel.add(updateButton);
 
         // Delete Button
-        deleteButton = new JButton("DELETE STUDENT");
-        deleteButton.setBackground(new Color(231, 76, 60));
-        deleteButton.setForeground(Color.WHITE);
-        deleteButton.setFont(new Font("Arial", Font.BOLD, 13));
-        deleteButton.setBounds(380, 10, 160, 40);
-        deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        deleteButton.setFocusPainted(false);
-        deleteButton.setBorderPainted(false);
+        deleteButton = UIStyle.createButton("DELETE STUDENT", UIStyle.ERROR_RED);
+        deleteButton.setBounds(390, 10, 170, 40);
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 deleteStudent();
@@ -177,14 +160,8 @@ public class ViewStudentsForm extends JFrame {
         buttonPanel.add(deleteButton);
 
         // Back Button
-        backButton = new JButton("BACK");
-        backButton.setBackground(new Color(127, 140, 141));
-        backButton.setForeground(Color.WHITE);
-        backButton.setFont(new Font("Arial", Font.BOLD, 13));
-        backButton.setBounds(560, 10, 100, 40);
-        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setFocusPainted(false);
-        backButton.setBorderPainted(false);
+        backButton = UIStyle.createButton("BACK", new Color(127, 140, 141));
+        backButton.setBounds(580, 10, 110, 40);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -194,7 +171,7 @@ public class ViewStudentsForm extends JFrame {
 
         // Message Label
         messageLabel = new JLabel("");
-        messageLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        messageLabel.setFont(UIStyle.FONT_MESSAGE);
         messageLabel.setBounds(20, 495, 400, 25);
         mainPanel.add(messageLabel);
 
@@ -225,11 +202,11 @@ public class ViewStudentsForm extends JFrame {
                 tableModel.addRow(row);
             }
             messageLabel.setText("  Total students: " + tableModel.getRowCount());
-            messageLabel.setForeground(new Color(44, 62, 80));
+            messageLabel.setForeground(UIStyle.PRIMARY_DARK);
             DatabaseConnection.closeConnection(conn);
         } catch (Exception e) {
             messageLabel.setText("  Error: " + e.getMessage());
-            messageLabel.setForeground(new Color(231, 76, 60));
+            messageLabel.setForeground(UIStyle.ERROR_RED);
         }
     }
 
@@ -238,7 +215,7 @@ public class ViewStudentsForm extends JFrame {
         String keyword = searchField.getText().trim();
         if (keyword.isEmpty()) {
             messageLabel.setText("  Please enter a search keyword!");
-            messageLabel.setForeground(new Color(231, 76, 60));
+            messageLabel.setForeground(UIStyle.ERROR_RED);
             return;
         }
 
@@ -269,15 +246,15 @@ public class ViewStudentsForm extends JFrame {
 
             if (tableModel.getRowCount() == 0) {
                 messageLabel.setText("  No students found!");
-                messageLabel.setForeground(new Color(231, 76, 60));
+                messageLabel.setForeground(UIStyle.ERROR_RED);
             } else {
                 messageLabel.setText("  Found " + tableModel.getRowCount() + " student(s)!");
-                messageLabel.setForeground(new Color(46, 204, 113));
+                messageLabel.setForeground(UIStyle.SUCCESS_GREEN);
             }
             DatabaseConnection.closeConnection(conn);
         } catch (Exception e) {
             messageLabel.setText("  Error: " + e.getMessage());
-            messageLabel.setForeground(new Color(231, 76, 60));
+            messageLabel.setForeground(UIStyle.ERROR_RED);
         }
     }
 
@@ -303,40 +280,64 @@ public class ViewStudentsForm extends JFrame {
 
         // Create update dialog
         JDialog dialog = new JDialog(this, "Update Student", true);
-        dialog.setSize(450, 450);
+        dialog.setSize(470, 480);
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(null);
-        dialog.getContentPane().setBackground(new Color(236, 240, 241));
+        dialog.getContentPane().setBackground(UIStyle.GRAY_BG);
 
         // Fields in dialog
-        JTextField fnField = createDialogField(dialog, "First Name:", firstName, 20);
-        JTextField lnField = createDialogField(dialog, "Last Name:", lastName, 70);
-        JTextField emField = createDialogField(dialog, "Email:", email, 120);
-        JTextField phField = createDialogField(dialog, "Phone:", phone, 170);
-        JTextField coField = createDialogField(dialog, "Course:", course, 220);
-        JTextField mkField = createDialogField(dialog, "Marks:", String.valueOf(marks), 270);
-        JTextField adField = createDialogField(dialog, "Address:", address, 320);
+        JTextField fnField = createDialogField(dialog, "First Name:", firstName, 25);
+        JTextField lnField = createDialogField(dialog, "Last Name:", lastName, 75);
+        JTextField emField = createDialogField(dialog, "Email:", email, 125);
+        JTextField phField = createDialogField(dialog, "Phone:", phone, 175);
+        JTextField coField = createDialogField(dialog, "Course:", course, 225);
+        JTextField mkField = createDialogField(dialog, "Marks:", String.valueOf(marks), 275);
+        JTextField adField = createDialogField(dialog, "Address:", address, 325);
 
         // Save button in dialog
-        JButton saveBtn = new JButton("SAVE CHANGES");
-        saveBtn.setBackground(new Color(46, 204, 113));
-        saveBtn.setForeground(Color.WHITE);
-        saveBtn.setFont(new Font("Arial", Font.BOLD, 13));
-        saveBtn.setBounds(100, 375, 150, 35);
-        saveBtn.setFocusPainted(false);
-        saveBtn.setBorderPainted(false);
+        JButton saveBtn = UIStyle.createButton("SAVE CHANGES", UIStyle.SUCCESS_GREEN);
+        saveBtn.setBounds(100, 385, 150, 38);
         saveBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String newEmail = emField.getText().trim();
+                String newPhone = phField.getText().trim();
+                String newMarks = mkField.getText().trim();
+
+                // Frontend validation
+                if (!isValidEmail(newEmail)) {
+                    JOptionPane.showMessageDialog(dialog,
+                        "Please enter a valid email address!",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (!newPhone.isEmpty() && !isValidPhone(newPhone)) {
+                    JOptionPane.showMessageDialog(dialog,
+                        "Phone must be a 10-digit number!",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                try {
+                    Double.parseDouble(newMarks);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialog,
+                        "Please enter valid marks!",
+                        "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
                 try {
                     Connection conn = DatabaseConnection.getConnection();
                     String sql = "UPDATE students SET first_name=?, last_name=?, email=?, phone=?, course=?, marks=?, address=? WHERE id=?";
                     PreparedStatement ps = conn.prepareStatement(sql);
                     ps.setString(1, fnField.getText());
                     ps.setString(2, lnField.getText());
-                    ps.setString(3, emField.getText());
-                    ps.setString(4, phField.getText());
+                    ps.setString(3, newEmail);
+                    ps.setString(4, newPhone);
                     ps.setString(5, coField.getText());
-                    ps.setDouble(6, Double.parseDouble(mkField.getText()));
+                    ps.setDouble(6, Double.parseDouble(newMarks));
                     ps.setString(7, adField.getText());
                     ps.setInt(8, id);
                     ps.executeUpdate();
@@ -358,13 +359,8 @@ public class ViewStudentsForm extends JFrame {
         dialog.add(saveBtn);
 
         // Cancel button in dialog
-        JButton cancelBtn = new JButton("CANCEL");
-        cancelBtn.setBackground(new Color(231, 76, 60));
-        cancelBtn.setForeground(Color.WHITE);
-        cancelBtn.setFont(new Font("Arial", Font.BOLD, 13));
-        cancelBtn.setBounds(270, 375, 100, 35);
-        cancelBtn.setFocusPainted(false);
-        cancelBtn.setBorderPainted(false);
+        JButton cancelBtn = UIStyle.createButton("CANCEL", UIStyle.ERROR_RED);
+        cancelBtn.setBounds(270, 385, 100, 38);
         cancelBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
@@ -376,19 +372,31 @@ public class ViewStudentsForm extends JFrame {
     }
 
     // Helper to create fields in dialog
-    private JTextField createDialogField(JDialog dialog, 
+    private JTextField createDialogField(JDialog dialog,
             String labelText, String value, int y) {
         JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Arial", Font.BOLD, 13));
+        label.setFont(UIStyle.FONT_LABEL);
+        label.setForeground(UIStyle.PRIMARY_DARK);
         label.setBounds(20, y, 100, 25);
         dialog.add(label);
 
         JTextField field = new JTextField(value);
-        field.setFont(new Font("Arial", Font.PLAIN, 13));
-        field.setBounds(130, y, 280, 28);
+        UIStyle.styleField(field);
+        field.setBounds(130, y, 300, 28);
         dialog.add(field);
 
         return field;
+    }
+
+    // Frontend email format validation
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
+    }
+
+    // Frontend phone validation: exactly 10 digits
+    private boolean isValidPhone(String phone) {
+        return phone.matches("^\\d{10}$");
     }
 
     // Delete selected student
@@ -403,7 +411,7 @@ public class ViewStudentsForm extends JFrame {
         }
 
         int id = (int) tableModel.getValueAt(selectedRow, 0);
-        String name = tableModel.getValueAt(selectedRow, 1) + " " + 
+        String name = tableModel.getValueAt(selectedRow, 1) + " " +
                       tableModel.getValueAt(selectedRow, 2);
 
         int choice = JOptionPane.showConfirmDialog(this,
@@ -427,7 +435,7 @@ public class ViewStudentsForm extends JFrame {
                 loadAllStudents();
             } catch (Exception e) {
                 messageLabel.setText("  Error: " + e.getMessage());
-                messageLabel.setForeground(new Color(231, 76, 60));
+                messageLabel.setForeground(UIStyle.ERROR_RED);
             }
         }
     }
