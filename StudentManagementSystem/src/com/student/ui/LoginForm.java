@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Frontend: Login screen. Authenticates users against the database and
+ * routes them to the Admin or Student dashboard.
+ */
 public class LoginForm extends JFrame {
 
     // Components
@@ -17,6 +21,7 @@ public class LoginForm extends JFrame {
     private JTextField usernameField;
     private JLabel passwordLabel;
     private JPasswordField passwordField;
+    private JCheckBox showPasswordBox;
     private JButton loginButton;
     private JButton clearButton;
     private JLabel messageLabel;
@@ -29,57 +34,71 @@ public class LoginForm extends JFrame {
 
         // Frame settings
         setTitle("Student Management System - Login");
-        setSize(450, 380);
+        setSize(450, 410);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         // Main Panel
         mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(44, 62, 80));
+        mainPanel.setBackground(UIStyle.PRIMARY_DARK);
         mainPanel.setLayout(null);
-        mainPanel.setPreferredSize(new Dimension(450, 380));
+        mainPanel.setPreferredSize(new Dimension(450, 410));
 
         // Title Label
         titleLabel = new JLabel("STUDENT MANAGEMENT SYSTEM");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        titleLabel.setBounds(40, 30, 370, 30);
+        titleLabel.setFont(UIStyle.FONT_TITLE);
+        titleLabel.setBounds(40, 25, 370, 30);
         mainPanel.add(titleLabel);
 
         // Username Label
         usernameLabel = new JLabel("Username:");
         usernameLabel.setForeground(Color.WHITE);
-        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        usernameLabel.setFont(UIStyle.FONT_LABEL);
         usernameLabel.setBounds(80, 110, 100, 25);
         mainPanel.add(usernameLabel);
 
         // Username Field
         usernameField = new JTextField();
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
+        UIStyle.styleField(usernameField);
         usernameField.setBounds(190, 110, 180, 30);
         mainPanel.add(usernameField);
 
         // Password Label
         passwordLabel = new JLabel("Password:");
         passwordLabel.setForeground(Color.WHITE);
-        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordLabel.setFont(UIStyle.FONT_LABEL);
         passwordLabel.setBounds(80, 160, 100, 25);
         mainPanel.add(passwordLabel);
 
         // Password Field
         passwordField = new JPasswordField();
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        UIStyle.styleField(passwordField);
         passwordField.setBounds(190, 160, 180, 30);
         mainPanel.add(passwordField);
 
+        // Show password checkbox
+        showPasswordBox = new JCheckBox("Show password");
+        showPasswordBox.setBackground(UIStyle.PRIMARY_DARK);
+        showPasswordBox.setForeground(Color.WHITE);
+        showPasswordBox.setFont(new Font("Arial", Font.PLAIN, 12));
+        showPasswordBox.setFocusPainted(false);
+        showPasswordBox.setBounds(190, 200, 150, 25);
+        showPasswordBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (showPasswordBox.isSelected()) {
+                    passwordField.setEchoChar((char) 0);
+                } else {
+                    passwordField.setEchoChar('\u25CF');
+                }
+            }
+        });
+        mainPanel.add(showPasswordBox);
+
         // Login Button
-        loginButton = new JButton("LOGIN");
-        loginButton.setBackground(new Color(52, 152, 219));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loginButton.setBounds(120, 220, 100, 35);
-        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginButton = UIStyle.createButton("LOGIN", UIStyle.PRIMARY_BLUE);
+        loginButton.setBounds(120, 245, 100, 38);
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 loginButtonClicked();
@@ -88,12 +107,8 @@ public class LoginForm extends JFrame {
         mainPanel.add(loginButton);
 
         // Clear Button
-        clearButton = new JButton("CLEAR");
-        clearButton.setBackground(new Color(231, 76, 60));
-        clearButton.setForeground(Color.WHITE);
-        clearButton.setFont(new Font("Arial", Font.BOLD, 14));
-        clearButton.setBounds(240, 220, 100, 35);
-        clearButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        clearButton = UIStyle.createButton("CLEAR", UIStyle.ERROR_RED);
+        clearButton.setBounds(230, 245, 100, 38);
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 clearButtonClicked();
@@ -103,9 +118,9 @@ public class LoginForm extends JFrame {
 
         // Message Label
         messageLabel = new JLabel("");
-        messageLabel.setForeground(new Color(231, 76, 60));
-        messageLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        messageLabel.setBounds(60, 275, 340, 25);
+        messageLabel.setForeground(new Color(255, 200, 200));
+        messageLabel.setFont(UIStyle.FONT_MESSAGE);
+        messageLabel.setBounds(60, 295, 340, 25);
         mainPanel.add(messageLabel);
 
         // Add panel to frame
@@ -119,7 +134,7 @@ public class LoginForm extends JFrame {
         // Validation
         if (username.isEmpty() || password.isEmpty()) {
             messageLabel.setText("  Please enter username and password!");
-            messageLabel.setForeground(new Color(231, 76, 60));
+            messageLabel.setForeground(new Color(255, 200, 200));
             return;
         }
 
@@ -134,7 +149,7 @@ public class LoginForm extends JFrame {
 
             if (rs.next()) {
                 String role = rs.getString("role");
-                messageLabel.setForeground(new Color(46, 204, 113));
+                messageLabel.setForeground(new Color(200, 255, 200));
                 messageLabel.setText("  Login Successful! Welcome " + username);
 
                 if (role.equals("ADMIN")) {
@@ -144,18 +159,21 @@ public class LoginForm extends JFrame {
                 }
                 this.dispose();
             } else {
-                messageLabel.setForeground(new Color(231, 76, 60));
+                messageLabel.setForeground(new Color(255, 200, 200));
                 messageLabel.setText("  Invalid username or password!");
             }
             DatabaseConnection.closeConnection(conn);
         } catch (Exception e) {
             messageLabel.setText("  Database error: " + e.getMessage());
+            messageLabel.setForeground(new Color(255, 200, 200));
         }
     }
 
     private void clearButtonClicked() {
         usernameField.setText("");
         passwordField.setText("");
+        showPasswordBox.setSelected(false);
+        passwordField.setEchoChar('\u25CF');
         messageLabel.setText("");
         usernameField.requestFocus();
     }
