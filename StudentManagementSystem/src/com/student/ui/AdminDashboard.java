@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Frontend: Admin dashboard. Provides access to student management features.
- */
 public class AdminDashboard extends JFrame {
 
     // Components
@@ -30,53 +27,53 @@ public class AdminDashboard extends JFrame {
 
         // Frame settings
         setTitle("Student Management System - Admin Dashboard");
-        setSize(650, 540);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         // Main Panel
         mainPanel = new JPanel();
-        mainPanel.setBackground(UIStyle.GRAY_BG);
+        mainPanel.setBackground(new Color(236, 240, 241));
         mainPanel.setLayout(null);
 
         // Header Panel
         headerPanel = new JPanel();
-        headerPanel.setBackground(UIStyle.PRIMARY_DARK);
+        headerPanel.setBackground(new Color(44, 62, 80));
         headerPanel.setLayout(null);
-        headerPanel.setBounds(0, 0, 650, 110);
+        headerPanel.setBounds(0, 0, 600, 100);
         mainPanel.add(headerPanel);
 
         // Title Label
         titleLabel = new JLabel("STUDENT MANAGEMENT SYSTEM");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(UIStyle.FONT_TITLE);
-        titleLabel.setBounds(100, 20, 450, 30);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setBounds(100, 20, 400, 30);
         headerPanel.add(titleLabel);
 
         // Welcome Label
         welcomeLabel = new JLabel("Welcome, Admin!");
-        welcomeLabel.setForeground(UIStyle.PRIMARY_BLUE);
-        welcomeLabel.setFont(UIStyle.FONT_SUBTITLE);
-        welcomeLabel.setBounds(220, 60, 200, 25);
+        welcomeLabel.setForeground(new Color(52, 152, 219));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        welcomeLabel.setBounds(220, 55, 200, 25);
         headerPanel.add(welcomeLabel);
 
         // Button Panel
         buttonPanel = new JPanel();
-        buttonPanel.setBackground(UIStyle.GRAY_BG);
+        buttonPanel.setBackground(new Color(236, 240, 241));
         buttonPanel.setLayout(null);
-        buttonPanel.setBounds(0, 110, 650, 430);
+        buttonPanel.setBounds(0, 100, 600, 400);
         mainPanel.add(buttonPanel);
 
         // Panel Title
         JLabel menuLabel = new JLabel("ADMIN PANEL");
         menuLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        menuLabel.setForeground(UIStyle.PRIMARY_DARK);
+        menuLabel.setForeground(new Color(44, 62, 80));
         menuLabel.setBounds(230, 20, 200, 30);
         buttonPanel.add(menuLabel);
 
         // Add Student Button
-        addStudentButton = UIStyle.createButton("ADD STUDENT", UIStyle.SUCCESS_GREEN);
+        addStudentButton = createButton("ADD STUDENT", new Color(46, 204, 113));
         addStudentButton.setBounds(100, 70, 180, 50);
         addStudentButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -86,8 +83,8 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(addStudentButton);
 
         // View Students Button
-        viewStudentsButton = UIStyle.createButton("VIEW ALL STUDENTS", UIStyle.PRIMARY_BLUE);
-        viewStudentsButton.setBounds(370, 70, 180, 50);
+        viewStudentsButton = createButton("VIEW ALL STUDENTS", new Color(52, 152, 219));
+        viewStudentsButton.setBounds(320, 70, 180, 50);
         viewStudentsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new ViewStudentsForm().setVisible(true);
@@ -96,7 +93,7 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(viewStudentsButton);
 
         // Search Student Button
-        searchStudentButton = UIStyle.createButton("SEARCH STUDENT", UIStyle.PURPLE);
+        searchStudentButton = createButton("SEARCH STUDENT", new Color(155, 89, 182));
         searchStudentButton.setBounds(100, 150, 180, 50);
         searchStudentButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -106,8 +103,8 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(searchStudentButton);
 
         // Update Student Button
-        updateStudentButton = UIStyle.createButton("UPDATE STUDENT", UIStyle.WARNING_ORANGE);
-        updateStudentButton.setBounds(370, 150, 180, 50);
+        updateStudentButton = createButton("UPDATE STUDENT", new Color(230, 126, 34));
+        updateStudentButton.setBounds(320, 150, 180, 50);
         updateStudentButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new ViewStudentsForm().setVisible(true);
@@ -116,7 +113,7 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(updateStudentButton);
 
         // Delete Student Button
-        deleteStudentButton = UIStyle.createButton("DELETE STUDENT", UIStyle.ERROR_RED);
+        deleteStudentButton = createButton("DELETE STUDENT", new Color(231, 76, 60));
         deleteStudentButton.setBounds(100, 230, 180, 50);
         deleteStudentButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -126,8 +123,8 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(deleteStudentButton);
 
         // Logout Button
-        logoutButton = UIStyle.createButton("LOGOUT", new Color(127, 140, 141));
-        logoutButton.setBounds(370, 230, 180, 50);
+        logoutButton = createButton("LOGOUT", new Color(127, 140, 141));
+        logoutButton.setBounds(320, 230, 180, 50);
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int choice = JOptionPane.showConfirmDialog(
@@ -146,6 +143,18 @@ public class AdminDashboard extends JFrame {
 
         // Add main panel to frame
         add(mainPanel);
+    }
+
+    // Helper method to create styled buttons
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 13));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        return button;
     }
 
     public static void main(String[] args) {

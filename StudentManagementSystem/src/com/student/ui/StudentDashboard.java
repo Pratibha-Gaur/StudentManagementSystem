@@ -8,9 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Frontend: Student dashboard showing profile info and quick actions.
- */
 public class StudentDashboard extends JFrame {
 
     // Components
@@ -52,7 +49,7 @@ public class StudentDashboard extends JFrame {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                studentName = rs.getString("first_name") +
+                studentName = rs.getString("first_name") + 
                              " " + rs.getString("last_name");
                 studentCourse = rs.getString("course");
                 studentMarks = rs.getDouble("marks");
@@ -73,42 +70,42 @@ public class StudentDashboard extends JFrame {
 
         // Frame settings
         setTitle("Student Management System - Student Dashboard");
-        setSize(650, 590);
+        setSize(600, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         // Main Panel
         mainPanel = new JPanel();
-        mainPanel.setBackground(UIStyle.GRAY_BG);
+        mainPanel.setBackground(new Color(236, 240, 241));
         mainPanel.setLayout(null);
 
         // Header Panel
         headerPanel = new JPanel();
-        headerPanel.setBackground(UIStyle.PRIMARY_DARK);
+        headerPanel.setBackground(new Color(44, 62, 80));
         headerPanel.setLayout(null);
-        headerPanel.setBounds(0, 0, 650, 110);
+        headerPanel.setBounds(0, 0, 600, 100);
         mainPanel.add(headerPanel);
 
         // Title Label
         titleLabel = new JLabel("STUDENT MANAGEMENT SYSTEM");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(UIStyle.FONT_TITLE);
-        titleLabel.setBounds(90, 15, 480, 30);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setBounds(90, 15, 430, 30);
         headerPanel.add(titleLabel);
 
         // Welcome Label
         welcomeLabel = new JLabel("Welcome, " + studentName + "!");
-        welcomeLabel.setForeground(UIStyle.PRIMARY_BLUE);
-        welcomeLabel.setFont(UIStyle.FONT_SUBTITLE);
-        welcomeLabel.setBounds(190, 60, 320, 25);
+        welcomeLabel.setForeground(new Color(52, 152, 219));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        welcomeLabel.setBounds(190, 55, 300, 25);
         headerPanel.add(welcomeLabel);
 
         // Info Panel
         infoPanel = new JPanel();
-        infoPanel.setBackground(UIStyle.PRIMARY_BLUE);
+        infoPanel.setBackground(new Color(52, 152, 219));
         infoPanel.setLayout(null);
-        infoPanel.setBounds(30, 125, 590, 130);
+        infoPanel.setBounds(30, 120, 540, 120);
         mainPanel.add(infoPanel);
 
         // Student Info
@@ -120,14 +117,14 @@ public class StudentDashboard extends JFrame {
 
         JLabel nameInfo = new JLabel("Name     :  " + studentName);
         nameInfo.setForeground(Color.WHITE);
-        nameInfo.setFont(UIStyle.FONT_FIELD);
-        nameInfo.setBounds(30, 45, 260, 20);
+        nameInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+        nameInfo.setBounds(30, 45, 250, 20);
         infoPanel.add(nameInfo);
 
         JLabel courseInfo = new JLabel("Course   :  " + studentCourse);
         courseInfo.setForeground(Color.WHITE);
-        courseInfo.setFont(UIStyle.FONT_FIELD);
-        courseInfo.setBounds(30, 75, 260, 20);
+        courseInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+        courseInfo.setBounds(30, 75, 250, 20);
         infoPanel.add(courseInfo);
 
         // Calculate grade
@@ -135,34 +132,34 @@ public class StudentDashboard extends JFrame {
 
         JLabel marksInfo = new JLabel("Marks    :  " + studentMarks);
         marksInfo.setForeground(Color.WHITE);
-        marksInfo.setFont(UIStyle.FONT_FIELD);
-        marksInfo.setBounds(320, 45, 230, 20);
+        marksInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+        marksInfo.setBounds(300, 45, 220, 20);
         infoPanel.add(marksInfo);
 
         JLabel gradeInfo = new JLabel("Grade    :  " + grade);
         gradeInfo.setForeground(Color.WHITE);
         gradeInfo.setFont(new Font("Arial", Font.BOLD, 14));
-        gradeInfo.setBounds(320, 75, 230, 20);
+        gradeInfo.setBounds(300, 75, 220, 20);
         infoPanel.add(gradeInfo);
 
         // Button Panel
         buttonPanel = new JPanel();
-        buttonPanel.setBackground(UIStyle.GRAY_BG);
+        buttonPanel.setBackground(new Color(236, 240, 241));
         buttonPanel.setLayout(null);
-        buttonPanel.setBounds(0, 275, 650, 300);
+        buttonPanel.setBounds(0, 260, 600, 280);
         mainPanel.add(buttonPanel);
 
         // Panel Title
         JLabel menuLabel = new JLabel("STUDENT PANEL");
         menuLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        menuLabel.setForeground(UIStyle.PRIMARY_DARK);
+        menuLabel.setForeground(new Color(44, 62, 80));
         menuLabel.setBounds(210, 15, 220, 30);
         buttonPanel.add(menuLabel);
 
         // View Profile Button
-        viewProfileButton = UIStyle.createButton(
-            "VIEW MY PROFILE", UIStyle.PRIMARY_BLUE);
-        viewProfileButton.setBounds(100, 70, 180, 50);
+        viewProfileButton = createButton(
+            "VIEW MY PROFILE", new Color(52, 152, 219));
+        viewProfileButton.setBounds(100, 65, 180, 50);
         viewProfileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showStudentProfile();
@@ -171,9 +168,9 @@ public class StudentDashboard extends JFrame {
         buttonPanel.add(viewProfileButton);
 
         // Grade Calculator Button
-        gradeCalcButton = UIStyle.createButton(
-            "GRADE CALCULATOR", UIStyle.PURPLE);
-        gradeCalcButton.setBounds(370, 70, 180, 50);
+        gradeCalcButton = createButton(
+            "GRADE CALCULATOR", new Color(155, 89, 182));
+        gradeCalcButton.setBounds(320, 65, 180, 50);
         gradeCalcButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new GradeCalculator().setVisible(true);
@@ -182,8 +179,8 @@ public class StudentDashboard extends JFrame {
         buttonPanel.add(gradeCalcButton);
 
         // Logout Button
-        logoutButton = UIStyle.createButton("LOGOUT", UIStyle.ERROR_RED);
-        logoutButton.setBounds(235, 150, 180, 50);
+        logoutButton = createButton("LOGOUT", new Color(231, 76, 60));
+        logoutButton.setBounds(210, 150, 180, 50);
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int choice = JOptionPane.showConfirmDialog(
@@ -256,11 +253,15 @@ public class StudentDashboard extends JFrame {
         else return "F  (Fail)";
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new StudentDashboard("student").setVisible(true);
-            }
-        });
+    // Helper method to create styled buttons
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 13));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        return button;
     }
 }
